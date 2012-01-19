@@ -72,7 +72,7 @@ class HelpApi {
 	              )
 	              for(operation <- operationsToRemove)api.removeOperation(operation)
 	              if(null == api.getOperations() || api.getOperations().size() == 0){
-	                apisToRemove + api
+	                apisToRemove += api
 	              }
 	            }
 	         }

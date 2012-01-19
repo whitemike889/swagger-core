@@ -58,7 +58,7 @@ class Documentation (@BeanProperty var apiVersion: String,
     this._apis.clear()
     if (ep != null) {
       for (n <- ep) {
-        _apis + n
+        _apis += n
       }
     }
   }
@@ -123,7 +123,7 @@ class DocumentationEndPoint(@BeanProperty var path: String, @BeanProperty var de
     this._ops.clear()
     if (ep != null) {
       for (n <- ep) {
-        _ops + n
+        _ops += n
       }
     }
   }
@@ -161,7 +161,7 @@ class DocumentationOperation(@BeanProperty var httpMethod: String,
     this._parameters.clear()
     if (ep != null) {
       for (n <- ep) {
-        _parameters + n
+        _parameters += n
       }
     }
   }
@@ -176,7 +176,7 @@ class DocumentationOperation(@BeanProperty var httpMethod: String,
     this._tags.clear()
     if (tagList != null && tagList.iterator != null) {
       for (tag <- tagList) {
-        _tags + tag
+        _tags += tag
       }
     }
   }
@@ -197,7 +197,7 @@ class DocumentationOperation(@BeanProperty var httpMethod: String,
     this._errorResponses.clear()
     if (ep != null) {
       for (n <- ep) {
-        _errorResponses + n
+        _errorResponses += n
       }
     }
   }
@@ -347,7 +347,7 @@ class DocumentationResponse(
     this._errorResponses.clear()
     if (ep != null) {
       for (n <- ep) {
-        _errorResponses + n
+        _errorResponses += n
       }
     }
   }
@@ -384,7 +384,7 @@ class DocumentationObject extends Name {
     this.fields.clear()
     if (ep != null) {
       for (n <- ep) {
-        fields + n
+        fields += n
       }
     }
   }
