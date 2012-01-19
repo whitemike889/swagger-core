@@ -9,10 +9,10 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.wordnik</groupId>
-	<artifactId>swagger-core</artifactId>
+	<artifactId>swagger-core_2.8.1</artifactId>
 	<packaging>jar</packaging>
 	<name>swagger-core</name>
-	<version>1.1-SNAPSHOT.111219</version>
+	<version>1.1-SNAPSHOT.121132</version>
 	<url>https://github.com/wordnik/swagger-core</url>
 	<scm>
 		<connection>scm:git:git@github.com:wordnik/swagger-core.git</connection>
@@ -32,6 +32,16 @@
 			<id>zeke</id>
 			<name>Zeke Sikelianos</name>
 			<email>zeke@wordnik.com</email>
+		</developer>
+		<developer>
+			<id>ayush</id>
+			<name>Ayush Gupta</name>
+			<email>ayush@glugbot.com</email>
+		</developer>
+		<developer>
+			<id>rpidikiti</id>
+			<name>Ramesh Pidikiti</name>
+			<email>ramesh@wordnik.com</email>
 		</developer>
 	</developers>
 	<issueManagement>
@@ -142,8 +152,9 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.7</version>
+				<version>${maven-javadoc-plugin-version}</version>
 				<configuration>
+					<sourcepath>${basedir}/src/main/java</sourcepath>
 					<aggregate>true</aggregate>
 					<source>1.6</source>
 					<encoding>UTF-8</encoding>
@@ -234,7 +245,7 @@
 				<plugin>
 					<groupId>org.scala-tools</groupId>
 					<artifactId>maven-scala-plugin</artifactId>
-					<version>2.9.1</version>
+					<version>${maven-scala-plugin-version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -335,6 +346,7 @@
 				<configuration>
 					<aggregate>true</aggregate>
 					<debug>true</debug>
+					<sourcepath>${basedir}/src/main/java</sourcepath>
 					<links>
 						<link>http://java.sun.com/javaee/5/docs/api</link>
 						<link>http://java.sun.com/j2se/1.5.0/docs/api</link>
@@ -345,7 +357,7 @@
 			<plugin>
 				<groupId>org.scala-tools</groupId>
 				<artifactId>maven-scala-plugin</artifactId>
-				<version>2.9.1</version>
+				<version>${maven-scala-plugin-version}</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -481,14 +493,15 @@
 		</dependency>
 	</dependencies>
 	<properties>
+		<maven-javadoc-plugin-version>2.8</maven-javadoc-plugin-version>
 		<servlet-api-version>2.5</servlet-api-version>
-		<scala-version>2.8.1</scala-version>
+		<maven-scala-plugin-version>2.15.2</maven-scala-plugin-version>
 		<jersey-version>1.7</jersey-version>
 		<jackson-version>1.7.7</jackson-version>
 		<junit-version>4.4</junit-version>
 		<maven-plugin.version>1.0.0</maven-plugin.version>
 		<commons-lang-version>2.4</commons-lang-version>
-		<scala.version>2.8.1</scala.version>
+		<scala-version>2.8.1</scala-version>
 		<slf4j-version>1.6.1</slf4j-version>
 		<scala-test-version>1.5.RC3</scala-test-version>
 	</properties>
