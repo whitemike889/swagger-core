@@ -7,7 +7,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.wordnik</groupId>
-    <artifactId>swagger-scala-apm-sample-app</artifactId>
+    <artifactId>swagger-scala-apm-sample-app-2.9-SNAPSHOT</artifactId>
     <packaging>war</packaging>
     <name>swagger-scala-sample-apm-app</name>
     <version>1.02-SNAPSHOT</version>
@@ -105,13 +105,13 @@
         </dependency>
         <dependency>
             <groupId>com.wordnik</groupId>
-            <artifactId>swagger-jaxrs_2.8.1</artifactId>
+            <artifactId>swagger-jaxrs_2.9-SNAPSHOT</artifactId>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.wordnik</groupId>
-            <artifactId>swagger-jaxrs-utils_2.8.1</artifactId>
-            <version>1.01</version>
+            <artifactId>swagger-jaxrs-utils_2.9-SNAPSHOT</artifactId>
+            <version>1.02-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -119,7 +119,7 @@
         </dependency>
         <dependency>
             <groupId>org.scalatest</groupId>
-            <artifactId>scalatest_2.8.1</artifactId>
+            <artifactId>scalatest_2.9.1</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

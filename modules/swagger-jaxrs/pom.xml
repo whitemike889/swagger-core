@@ -7,7 +7,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.wordnik</groupId>
-    <artifactId>swagger-jaxrs_2.8.1</artifactId>
+    <artifactId>swagger-jaxrs_2.9-SNAPSHOT</artifactId>
     <packaging>jar</packaging>
     <version>1.02-SNAPSHOT</version>
     <name>swagger-jaxrs</name>
@@ -27,7 +27,7 @@
     <dependencies>
         <dependency>
             <groupId>org.scalatest</groupId>
-            <artifactId>scalatest_2.8.1</artifactId>
+            <artifactId>scalatest_2.9.1</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -42,7 +42,7 @@
         </dependency>
         <dependency>
             <groupId>com.wordnik</groupId>
-            <artifactId>swagger-core_2.8.1</artifactId>
+            <artifactId>swagger-core_2.9-SNAPSHOT</artifactId>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
