@@ -260,6 +260,8 @@ private class ApiModelParser(val hostClass: Class[_]) extends BaseApiParser {
         case apiProperty: ApiProperty => {
           docParam.description = readString(apiProperty.value)
           docParam.notes = readString(apiProperty.notes)
+          docParam.paramType = readString(apiProperty.dataType)
+          
           try {
             docParam.allowableValues = convertToAllowableValues(apiProperty.allowableValues)
           } catch {
