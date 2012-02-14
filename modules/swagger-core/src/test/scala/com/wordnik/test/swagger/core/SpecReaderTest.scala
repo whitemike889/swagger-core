@@ -53,6 +53,20 @@ class SpecReaderTest extends FlatSpec with ShouldMatchers {
     assert((docObj.getFields.map(f=>f.name).toSet & Set("testInt","testString")).size === 2)
   }
 
+  it should "read collection of collection properties " in {
+    var docObj = ApiPropertiesReader.read(classOf[TestCollectionOfCollections])
+    assert(docObj.getFields.filter(f=>f.name == "mapOfMaps").size > 0)
+    assert(docObj.getFields.filter(f=>f.name == "mapOfMaps").get(0).getParamType()  === "Map[string,Map[string,double]]")
+    assert(docObj.getFields.filter(f=>f.name == "listOfLists").get(0).getParamType()  === "List[List[string]]")
+    assert(docObj.getFields.filter(f=>f.name == "listOfMaps").get(0).getParamType()  === "List[Map[string,double]]")
+    assert(docObj.getFields.filter(f=>f.name == "setofLists").get(0).getParamType()  === "Set[List[string]]")
+  }
+
+  it should "read scala enum properties as string" in {
+    var docObj = ApiPropertiesReader.read(classOf[TestClassWithScalaEnums])
+    assert(docObj.getFields.filter(f=>f.name == "label").get(0).getParamType()  === "String")
+  }
+  
   it should "read different data types properly " in {
     var docObj = ApiPropertiesReader.read(classOf[SampleDataTypes])
     var assertedFields = 0;
@@ -307,5 +321,31 @@ trait Id {
 class ObjectWithTransientGetterAndXMLElementInTrait extends Id {
   @XmlTransient
   override def getId(): String = super.getId()
+}
+
+@XmlRootElement(name = "TestCollectionOfCollections")
+@XmlAccessorType(XmlAccessType.NONE)
+class TestCollectionOfCollections {
+  @XmlElement @BeanProperty var mapOfMaps: java.util.HashMap[String, java.util.HashMap[String,  java.lang.Double]] = _
+  @XmlElement @BeanProperty var listOfLists: java.util.List[java.util.List[String]] = _
+  @XmlElement @BeanProperty var listOfMaps: java.util.List[java.util.HashMap[String,  java.lang.Double]] = _
+  @XmlElement @BeanProperty var setofLists: java.util.Set[java.util.List[String]] = _
+  //the folowing use case is no currently supported by swagger
+  //@XmlElement @BeanProperty var arrayofLists: Array[java.util.List[String]] = _
+
+}
+
+@XmlRootElement(name = "TestClassWithScalaEnums")
+class TestClassWithScalaEnums {
+  @ApiProperty(dataType="String")
+  @XmlElement @BeanProperty var label: ScalaEnums.Value = _
+}
+
+object ScalaEnums extends Enumeration {
+    type ScalaEnums = Value
+
+    val Abbreviation                  = Value("abbrev")
+    val AdjectivalComplement          = Value("acomp")
+    val AdverbialClauseModifier       = Value("advcl")
 }
 
