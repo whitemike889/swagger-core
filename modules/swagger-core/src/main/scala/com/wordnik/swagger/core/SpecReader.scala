@@ -51,19 +51,19 @@ object ApiPropertiesReader {
     if (TypeUtil.isParameterizedList(genericReturnType)) {
       val parameterizedType = genericReturnType.asInstanceOf[java.lang.reflect.ParameterizedType]
       val valueType = parameterizedType.getActualTypeArguments.head
-      paramType = "List[" + readName(valueType.asInstanceOf[Class[_]]) + "]"
+      paramType = "List[" + getDataType(valueType, valueType) + "]"
     } else if (TypeUtil.isParameterizedSet(genericReturnType)) {
       val parameterizedType = genericReturnType.asInstanceOf[java.lang.reflect.ParameterizedType]
       val valueType = parameterizedType.getActualTypeArguments.head
-      paramType = "Set[" + readName(valueType.asInstanceOf[Class[_]]) + "]"
+      paramType = "Set[" + getDataType(valueType, valueType) + "]"
     } else if (TypeUtil.isParameterizedMap(genericReturnType)) {
       val parameterizedType = genericReturnType.asInstanceOf[java.lang.reflect.ParameterizedType]
       val typeArgs = parameterizedType.getActualTypeArguments
       val keyType = typeArgs(0)
       val valueType = typeArgs(1)
 
-      val keyName = readName(keyType.asInstanceOf[Class[_]])
-      val valueName = readName(valueType.asInstanceOf[Class[_]])
+      val keyName = getDataType(keyName, keyName)
+      val valueName = getDataType(valueName, valueName)
       paramType = "Map[" + keyName + "," + valueName + "]"
     } else if (!returnType.getClass.isAssignableFrom(classOf[ParameterizedTypeImpl]) && returnType.asInstanceOf[Class[_]].isArray) {
       var arrayClass= returnType.asInstanceOf[Class[_]].getComponentType
