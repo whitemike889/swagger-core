@@ -17,7 +17,7 @@
 package com.wordnik.test.swagger.core
 
 import com.wordnik.swagger.core.util._
-import com.wordnik.swagger.core.ApiPropertiesReader
+import com.wordnik.swagger.core.{ApiProperty, ApiPropertiesReader}
 
 import javax.xml.bind._
 import javax.xml.bind.annotation._

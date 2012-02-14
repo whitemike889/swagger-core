@@ -53,13 +53,14 @@ object TypeUtil {
    * @return true if the passed type represents a paramterized map
    */
   def isParameterizedMap(genericType: Type): Boolean = {
-    var isList: Boolean = false
+    var isMap: Boolean = false
     val isTypeParameterized: Boolean = classOf[ParameterizedType].isAssignableFrom(genericType.getClass)
     if (isTypeParameterized) {
       val parameterizedType: ParameterizedType = genericType.asInstanceOf[ParameterizedType]
-      isList = (parameterizedType.getRawType == classOf[Map[_, _]])
+      isMap = (parameterizedType.getRawType == classOf[Map[_, _]])
+      if(!isMap)isMap = (parameterizedType.getRawType == classOf[HashMap[_,_]]);
     }
-    return isList && isTypeParameterized
+    return isMap && isTypeParameterized
   }
 
   /**
