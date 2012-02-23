@@ -42,8 +42,8 @@ object ApiPropertiesReader {
     }
   }
 
-  def readName(hostClass: Class[_]): String = {
-    new ApiModelParser(hostClass).readName(hostClass)
+  def readName(hostClass: Class[_], isSimple:Boolean=true): String = {
+    new ApiModelParser(hostClass).readName(hostClass, isSimple)
   }
 
   def getDataType(genericReturnType: Type, returnType: Type):String = {
@@ -84,14 +84,14 @@ object ApiPropertiesReader {
       TypeUtil.isParameterizedSet(genericReturnType)) {
       val parameterizedType = genericReturnType.asInstanceOf[java.lang.reflect.ParameterizedType]
       val valueType = parameterizedType.getActualTypeArguments.head
-      typeParam = readName(valueType.asInstanceOf[Class[_]])
+      typeParam = readName(valueType.asInstanceOf[Class[_]], false)
     } else if (TypeUtil.isParameterizedMap(genericReturnType)) {
       val parameterizedType = genericReturnType.asInstanceOf[java.lang.reflect.ParameterizedType]
       val typeArgs = parameterizedType.getActualTypeArguments
       val keyType = typeArgs(0)
       val valueType = typeArgs(1)
-      val keyName = readName(keyType.asInstanceOf[Class[_]])
-      val valueName = readName(valueType.asInstanceOf[Class[_]])
+      val keyName = readName(keyType.asInstanceOf[Class[_]], false)
+      val valueName = readName(valueType.asInstanceOf[Class[_]], false)
       typeParam = "Map[" + keyName + "," + valueName + "]"
     } else if (!returnType.getClass.isAssignableFrom(classOf[ParameterizedTypeImpl]) && returnType.asInstanceOf[Class[_]].isArray) {
       var arrayClass= returnType.asInstanceOf[Class[_]].getComponentType
@@ -100,7 +100,7 @@ object ApiPropertiesReader {
       //we might also have properties that are parametarized by not assignable to java collections. Examples: Scala collections
       ///This step will ignore all those fields.
       if (!genericReturnType.getClass.isAssignableFrom(classOf[ParameterizedTypeImpl])){
-        typeParam = readName(genericReturnType.asInstanceOf[Class[_]])
+        typeParam = readName(genericReturnType.asInstanceOf[Class[_]], false)
       }
     }
     typeParam
@@ -116,7 +116,7 @@ private class ApiModelParser(val hostClass: Class[_]) extends BaseApiParser {
   private val xmlElementTypeMethod = classOf[XmlElement].getDeclaredMethod("type")
   private val processedFields:java.util.List[String] = new java.util.ArrayList[String]()
 
-  def readName(hostClass: Class[_]): String = {
+  def readName(hostClass: Class[_], isSimple:Boolean=true): String = {
     val xmlRootElement = hostClass.getAnnotation(classOf[XmlRootElement])
     val xmlEnum = hostClass.getAnnotation(classOf[XmlEnum])
 
@@ -127,9 +127,9 @@ private class ApiModelParser(val hostClass: Class[_]) extends BaseApiParser {
       readName(xmlEnum.value())
     } else if (xmlRootElement != null) {
       if ("##default".equals(xmlRootElement.name())) {
-        hostClass.getSimpleName
+        if(isSimple) hostClass.getSimpleName else hostClass.getName
       } else {
-        readString(xmlRootElement.name())
+        if(isSimple) readString(xmlRootElement.name()) else hostClass.getName
       }
     } else if (hostClass.getName.startsWith("java.lang.")) {
       hostClass.getName.substring("java.lang.".length).toLowerCase
@@ -137,7 +137,7 @@ private class ApiModelParser(val hostClass: Class[_]) extends BaseApiParser {
       hostClass.getName
     } else {
       LOGGER.error("Class " + hostClass.getName + " is not annotated with a @XmlRootElement annotation, using " + hostClass.getSimpleName)
-      hostClass.getSimpleName
+      if(isSimple) hostClass.getSimpleName else hostClass.getName
     }
   }
 
