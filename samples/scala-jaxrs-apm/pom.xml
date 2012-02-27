@@ -1,13 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
         <groupId>com.wordnik</groupId>
-        <artifactId>swagger-project</artifactId>
+        <artifactId>swagger-project_2.10-M2</artifactId>
         <version>1.02-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.wordnik</groupId>
-    <artifactId>swagger-scala-apm-sample-app-2.9-SNAPSHOT</artifactId>
+    <artifactId>swagger-scala-apm-sample-app_2.10-M2</artifactId>
     <packaging>war</packaging>
     <name>swagger-scala-sample-apm-app</name>
     <version>1.02-SNAPSHOT</version>
@@ -105,12 +105,12 @@
         </dependency>
         <dependency>
             <groupId>com.wordnik</groupId>
-            <artifactId>swagger-jaxrs_2.9-SNAPSHOT</artifactId>
+            <artifactId>swagger-jaxrs_2.10-M2</artifactId>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.wordnik</groupId>
-            <artifactId>swagger-jaxrs-utils_2.9-SNAPSHOT</artifactId>
+            <artifactId>swagger-jaxrs-utils_2.10-M2</artifactId>
             <version>1.02-SNAPSHOT</version>
         </dependency>
         <dependency>

@@ -2,12 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
         <groupId>com.wordnik</groupId>
-        <artifactId>swagger-project</artifactId>
+        <artifactId>swagger-project_2.10-M2</artifactId>
         <version>1.02-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.wordnik</groupId>
-    <artifactId>swagger-jaxrs_2.9-SNAPSHOT</artifactId>
+    <artifactId>swagger-jaxrs_2.10-M2</artifactId>
     <packaging>jar</packaging>
     <version>1.02-SNAPSHOT</version>
     <name>swagger-jaxrs</name>
@@ -42,7 +42,7 @@
         </dependency>
         <dependency>
             <groupId>com.wordnik</groupId>
-            <artifactId>swagger-core_2.9-SNAPSHOT</artifactId>
+            <artifactId>swagger-core_2.10-M2</artifactId>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
