@@ -67,7 +67,7 @@ object ApiPropertiesReader {
       paramType = "Map[" + keyName + "," + valueName + "]"
     } else if (!returnType.getClass.isAssignableFrom(classOf[ParameterizedTypeImpl]) && returnType.asInstanceOf[Class[_]].isArray) {
       var arrayClass= returnType.asInstanceOf[Class[_]].getComponentType
-      paramType = "Array[" + arrayClass.getName + "]"
+      paramType = "Array[" + arrayClass.getSimpleName + "]"
     } else {
       //we might also have properties that are parametarized by not assignable to java collections. Examples: Scala collections
       ///This step will ignore all those fields.
