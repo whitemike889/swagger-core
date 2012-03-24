@@ -120,22 +120,37 @@ object TypeUtil {
           for (field <- clazz.getDeclaredFields) {
             if (Modifier.isPublic(field.getModifiers)) {
               var fieldClass: String = field.getType.getName
+              var fieldGenericType = field.getGenericType
+              field.getType.isArray match {
+                case true => {
+                  fieldClass = field.getType.asInstanceOf[Class[_]].getComponentType.getName
+                }
+                case _ =>
+              }
               if (fieldClass.startsWith(WORDNIK_PACKAGES)) {
                 referencedClasses.add(fieldClass)
               }
               else {
-                referencedClasses.addAll(getWordnikParameterTypes(field.getGenericType))
+                referencedClasses.addAll(getWordnikParameterTypes(fieldGenericType))
               }
             }
           }
           for (method <- clazz.getDeclaredMethods) {
             if (Modifier.isPublic(method.getModifiers)) {
               var methodReturnClass: String = method.getReturnType.getName
+              var methodGenericType = method.getGenericReturnType
+
+              method.getReturnType.isArray match {
+                case true => {
+                  methodReturnClass = method.getReturnType.asInstanceOf[Class[_]].getComponentType.getName
+                }
+                case _ =>
+              }
               if (methodReturnClass.startsWith(WORDNIK_PACKAGES)) {
                 referencedClasses.add(methodReturnClass)
               }
               else {
-                referencedClasses.addAll(getWordnikParameterTypes(method.getGenericReturnType))
+                referencedClasses.addAll(getWordnikParameterTypes(methodGenericType))
               }
             }
           }

@@ -30,6 +30,7 @@ import org.scalatest.matchers.ShouldMatchers
 
 import scala.collection.JavaConversions._
 import scala.reflect.BeanProperty
+import scala.annotation.target.field
 
 @RunWith(classOf[JUnitRunner])
 class SpecReaderTest extends FlatSpec with ShouldMatchers {
@@ -119,6 +120,19 @@ class SpecReaderTest extends FlatSpec with ShouldMatchers {
 
   it should "read properties if attribute is defined as transient in the main class and xml element in the base class " in {
     var docObj = ApiPropertiesReader.read(classOf[ObjectWithTransientGetterAndXMLElementInTrait])
+    assert(docObj.getFields.size() === 1)
+  }
+
+  it should "read objects inside an array " in {
+    var classes:java.util.List[String] = new java.util.ArrayList[String]()
+    classes.add(classOf[TestClassWithArrayOfNonPrimitiveObjects].getName);
+    val types = TypeUtil.getReferencedClasses(classes)
+    assert(types.size() === 2)
+  }
+
+  it should "read properties from constructor args" in {
+    var docObj = ApiPropertiesReader.read(classOf[TestClassWithConstructorProperties])
+    assert(null != docObj.getFields, "should add fields from constructor")
     assert(docObj.getFields.size() === 1)
   }
 }
@@ -332,13 +346,31 @@ class TestCollectionOfCollections {
   @XmlElement @BeanProperty var setofLists: java.util.Set[java.util.List[String]] = _
   //the folowing use case is no currently supported by swagger
   //@XmlElement @BeanProperty var arrayofLists: Array[java.util.List[String]] = _
-
 }
 
 @XmlRootElement(name = "TestClassWithScalaEnums")
 class TestClassWithScalaEnums {
   @ApiProperty(dataType="String")
   @XmlElement @BeanProperty var label: ScalaEnums.Value = _
+}
+
+@XmlRootElement(name = "TestClassWithJavaEnums")
+class TestClassWithJavaEnums {
+
+  @ApiProperty(dataType="String")
+  @XmlElement(name = "enumType")@BeanProperty var enumType:TestEnum = TestEnum.PUBLIC
+  @XmlElement @BeanProperty var name:String = _
+}
+
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlRootElement(name = "TestClassWithArrayOfNonPrimitiveObjects")
+class TestClassWithArrayOfNonPrimitiveObjects {
+  @XmlElement @BeanProperty var arrayWithObjects:Array[BaseClass] = _
+}
+
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlRootElement(name = "TestClassWithConstructorProperties")
+class TestClassWithConstructorProperties(@(XmlElement @field)(name="text") @BeanProperty var text:String) {
 }
 
 object ScalaEnums extends Enumeration {
