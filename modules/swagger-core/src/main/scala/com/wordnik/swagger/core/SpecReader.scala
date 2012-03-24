@@ -278,6 +278,7 @@ private class ApiModelParser(val hostClass: Class[_]) extends BaseApiParser {
           docParam.name = readString(xmlAttribute.name, docParam.name, "##default")
           docParam.name = readString(name, docParam.name)
           docParam.required = xmlAttribute.required
+          isXmlElement = true
         }
         case xmlElement: XmlElement => {
           docParam.name = readString(xmlElement.name, docParam.name, "##default")

@@ -135,6 +135,22 @@ class SpecReaderTest extends FlatSpec with ShouldMatchers {
     assert(null != docObj.getFields, "should add fields from constructor")
     assert(docObj.getFields.size() === 1)
   }
+
+  it should "read objects with objects form different element and property names" in {
+    var classes:java.util.List[String] = new java.util.ArrayList[String]()
+    classes.add(classOf[ObjectWithDifferentElementAndPropertyName].getName);
+    val types = TypeUtil.getReferencedClasses(classes)
+    println(types)
+    assert(types.size() === 2)
+  }
+
+  it should "read properties with XML attribute annotations" in {
+    var docObj = ApiPropertiesReader.read(classOf[ObjectWithRootElementName])
+    expect(3) {
+      docObj.getFields.size()
+    }
+  }
+
 }
 
 @RunWith(classOf[JUnitRunner])
@@ -371,6 +387,20 @@ class TestClassWithArrayOfNonPrimitiveObjects {
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "TestClassWithConstructorProperties")
 class TestClassWithConstructorProperties(@(XmlElement @field)(name="text") @BeanProperty var text:String) {
+}
+
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlRootElement(name = "ObjectWithDifferentRootElementName")
+class ObjectWithRootElementName {
+  @XmlAttribute(name="label") @BeanProperty var label:String = _
+  @XmlAttribute(name="width") @BeanProperty var width:Int = _
+  @XmlAttribute(name="height") @BeanProperty var height:Int = _
+}
+
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlRootElement(name = "ObjectWithDifferentElementAndPropertyName")
+class ObjectWithDifferentElementAndPropertyName {
+  @XmlElement(name = "differentElementAndPropertyName") @BeanProperty var sizes:java.util.List[ObjectWithRootElementName] = new java.util.ArrayList[ObjectWithRootElementName]
 }
 
 object ScalaEnums extends Enumeration {
