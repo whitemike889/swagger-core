@@ -7,7 +7,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.wordnik</groupId>
-    <artifactId>swagger-jaxrs_2.9-SNAPSHOT</artifactId>
+    <artifactId>swagger-jaxrs_2.9.1-1</artifactId>
     <packaging>jar</packaging>
     <version>1.02-SNAPSHOT</version>
     <name>swagger-jaxrs</name>
@@ -42,7 +42,9 @@
         </dependency>
         <dependency>
             <groupId>com.wordnik</groupId>
-            <artifactId>swagger-core_2.9-SNAPSHOT</artifactId>
+            <artifactId>swagger-core_2.9.1-1</artifactId>
+            <version>${project.parent.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>

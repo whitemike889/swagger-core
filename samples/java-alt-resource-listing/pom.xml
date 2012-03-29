@@ -6,7 +6,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.wordnik</groupId>
-    <artifactId>swagger-sample-java-alt-resource-listing-2.9-SNAPSHOT</artifactId>
+    <artifactId>swagger-sample-java-alt-resource-listing-2.9.1-1</artifactId>
     <packaging>war</packaging>
     <name>swagger-sample-java-alt-resource-listing</name>
     <version>1.02-SNAPSHOT</version>
@@ -100,11 +100,13 @@
     <dependencies>
         <dependency>
             <groupId>com.wordnik</groupId>
-            <artifactId>swagger-jaxrs_2.9-SNAPSHOT</artifactId>
+            <artifactId>swagger-jaxrs_2.9.1-1</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.wordnik</groupId>
-            <artifactId>swagger-core_2.9-SNAPSHOT</artifactId>
+            <artifactId>swagger-core_2.9.1-1</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
