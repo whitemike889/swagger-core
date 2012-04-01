@@ -131,7 +131,6 @@ class SpecReaderTest extends FlatSpec with ShouldMatchers {
   }
 
   it should "read objects inside a map " in {
-    println("doing your test ::::::::::::::::::::::")
     var classes:java.util.List[String] = new java.util.ArrayList[String]()
     classes.add(classOf[ObjectWithChildObjectsInMap].getName);
     val types = TypeUtil.getReferencedClasses(classes)
