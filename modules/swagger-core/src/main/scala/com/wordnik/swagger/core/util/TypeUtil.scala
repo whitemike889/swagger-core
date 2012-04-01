@@ -76,12 +76,23 @@ object TypeUtil {
    */
   private def getWordnikParameterTypes(genericType: Type): List[String] = {
     var list: List[String] = new ArrayList[String]
-    if (isParameterizedList(genericType)) {
+    if (isParameterizedList(genericType) || isParameterizedSet(genericType)) {
       val parameterizedType: ParameterizedType = genericType.asInstanceOf[ParameterizedType]
       for (_listType <- parameterizedType.getActualTypeArguments) {
         val listType: Class[_] = _listType.asInstanceOf[Class[_]]
         if (listType.getName.startsWith(WORDNIK_PACKAGES)) list.add(listType.getName)
       }
+    } else if (isParameterizedMap(genericType)) {
+      val parameterizedType: ParameterizedType = genericType.asInstanceOf[ParameterizedType]
+      val typeArgs = parameterizedType.getActualTypeArguments
+      val keyType = typeArgs(0)
+      val valueType = typeArgs(1)
+      val keyTypeClass: Class[_] = keyType.asInstanceOf[Class[_]]
+      val valueTypeClass: Class[_] = valueType.asInstanceOf[Class[_]]
+      if (keyTypeClass.getName.startsWith(WORDNIK_PACKAGES)) list.add(keyTypeClass.getName)
+      if (valueTypeClass.getName.startsWith(WORDNIK_PACKAGES)) list.add(valueTypeClass.getName)
+      list.addAll(getWordnikParameterTypes(keyType))
+      list.addAll(getWordnikParameterTypes(valueType))
     }
     return list
   }

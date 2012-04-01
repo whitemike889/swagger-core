@@ -130,6 +130,14 @@ class SpecReaderTest extends FlatSpec with ShouldMatchers {
     assert(types.size() === 2)
   }
 
+  it should "read objects inside a map " in {
+    println("doing your test ::::::::::::::::::::::")
+    var classes:java.util.List[String] = new java.util.ArrayList[String]()
+    classes.add(classOf[ObjectWithChildObjectsInMap].getName);
+    val types = TypeUtil.getReferencedClasses(classes)
+    assert(types.size() === 2)
+  }
+
   it should "read properties from constructor args" in {
     var docObj = ApiPropertiesReader.read(classOf[TestClassWithConstructorProperties])
     assert(null != docObj.getFields, "should add fields from constructor")
@@ -401,6 +409,12 @@ class ObjectWithRootElementName {
 @XmlRootElement(name = "ObjectWithDifferentElementAndPropertyName")
 class ObjectWithDifferentElementAndPropertyName {
   @XmlElement(name = "differentElementAndPropertyName") @BeanProperty var sizes:java.util.List[ObjectWithRootElementName] = new java.util.ArrayList[ObjectWithRootElementName]
+}
+
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlRootElement(name = "ObjectWithChildObjectsInMap")
+class ObjectWithChildObjectsInMap {
+  @XmlElement @BeanProperty var objectsInMap:java.util.Map[String, ObjectWithRootElementName] = _
 }
 
 object ScalaEnums extends Enumeration {
