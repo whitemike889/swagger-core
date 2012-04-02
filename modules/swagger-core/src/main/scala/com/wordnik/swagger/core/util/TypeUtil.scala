@@ -87,10 +87,14 @@ object TypeUtil {
       val typeArgs = parameterizedType.getActualTypeArguments
       val keyType = typeArgs(0)
       val valueType = typeArgs(1)
-      val keyTypeClass: Class[_] = keyType.asInstanceOf[Class[_]]
-      val valueTypeClass: Class[_] = valueType.asInstanceOf[Class[_]]
-      if (keyTypeClass.getName.startsWith(WORDNIK_PACKAGES)) list.add(keyTypeClass.getName)
-      if (valueTypeClass.getName.startsWith(WORDNIK_PACKAGES)) list.add(valueTypeClass.getName)
+      if (keyType.isInstanceOf[Class[_]]) {
+        val keyTypeClass: Class[_] = keyType.asInstanceOf[Class[_]]
+        if (keyTypeClass.getName.startsWith(WORDNIK_PACKAGES)) list.add(keyTypeClass.getName)
+      }
+      if (valueType.isInstanceOf[Class[_]]) {
+        val valueTypeClass: Class[_] = valueType.asInstanceOf[Class[_]]
+        if (valueTypeClass.getName.startsWith(WORDNIK_PACKAGES)) list.add(valueTypeClass.getName)
+      }
       list.addAll(getWordnikParameterTypes(keyType))
       list.addAll(getWordnikParameterTypes(valueType))
     }
