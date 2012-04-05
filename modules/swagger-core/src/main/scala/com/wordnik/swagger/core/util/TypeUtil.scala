@@ -115,7 +115,7 @@ object TypeUtil {
   }
   
   private def checkAndAddConcreteObjectType(classType:Type, list: java.util.List[String]) {
-    if (!classType.getClass.isAssignableFrom(classOf[ParameterizedTypeImpl])){
+    if (classType.getClass.isAssignableFrom(classOf[Class[_]])){
       val listType: Class[_] = classType.asInstanceOf[Class[_]]
       if (listType.getName.startsWith(WORDNIK_PACKAGES)) list.add(listType.getName)
     }
