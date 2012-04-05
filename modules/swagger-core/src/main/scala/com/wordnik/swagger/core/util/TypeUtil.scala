@@ -20,6 +20,7 @@ import com.wordnik.swagger.core.SwaggerContext
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.lang.reflect._
+import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl
 
 object TypeUtil {
   /**
@@ -79,8 +80,10 @@ object TypeUtil {
     if (isParameterizedList(genericType) || isParameterizedSet(genericType)) {
       val parameterizedType: ParameterizedType = genericType.asInstanceOf[ParameterizedType]
       for (_listType <- parameterizedType.getActualTypeArguments) {
-        val listType: Class[_] = _listType.asInstanceOf[Class[_]]
-        if (listType.getName.startsWith(WORDNIK_PACKAGES)) list.add(listType.getName)
+        if (!_listType.getClass.isAssignableFrom(classOf[ParameterizedTypeImpl])){
+          val listType: Class[_] = _listType.asInstanceOf[Class[_]]
+          if (listType.getName.startsWith(WORDNIK_PACKAGES)) list.add(listType.getName)
+        }
       }
     } else if (isParameterizedMap(genericType)) {
       val parameterizedType: ParameterizedType = genericType.asInstanceOf[ParameterizedType]
@@ -88,12 +91,16 @@ object TypeUtil {
       val keyType = typeArgs(0)
       val valueType = typeArgs(1)
       if (keyType.isInstanceOf[Class[_]]) {
-        val keyTypeClass: Class[_] = keyType.asInstanceOf[Class[_]]
-        if (keyTypeClass.getName.startsWith(WORDNIK_PACKAGES)) list.add(keyTypeClass.getName)
+        if (!keyType.getClass.isAssignableFrom(classOf[ParameterizedTypeImpl])){
+          val keyTypeClass: Class[_] = keyType.asInstanceOf[Class[_]]
+          if (keyTypeClass.getName.startsWith(WORDNIK_PACKAGES)) list.add(keyTypeClass.getName)
+        }
       }
       if (valueType.isInstanceOf[Class[_]]) {
-        val valueTypeClass: Class[_] = valueType.asInstanceOf[Class[_]]
-        if (valueTypeClass.getName.startsWith(WORDNIK_PACKAGES)) list.add(valueTypeClass.getName)
+        if (!valueType.getClass.isAssignableFrom(classOf[ParameterizedTypeImpl])){
+          val valueTypeClass: Class[_] = valueType.asInstanceOf[Class[_]]
+          if (valueTypeClass.getName.startsWith(WORDNIK_PACKAGES)) list.add(valueTypeClass.getName)
+        }
       }
       list.addAll(getWordnikParameterTypes(keyType))
       list.addAll(getWordnikParameterTypes(valueType))
@@ -138,7 +145,9 @@ object TypeUtil {
               var fieldGenericType = field.getGenericType
               field.getType.isArray match {
                 case true => {
-                  fieldClass = field.getType.asInstanceOf[Class[_]].getComponentType.getName
+                  if (!field.getType.getClass.isAssignableFrom(classOf[ParameterizedTypeImpl])){
+                    fieldClass = field.getType.asInstanceOf[Class[_]].getComponentType.getName
+                  }
                 }
                 case _ =>
               }
@@ -157,7 +166,9 @@ object TypeUtil {
 
               method.getReturnType.isArray match {
                 case true => {
-                  methodReturnClass = method.getReturnType.asInstanceOf[Class[_]].getComponentType.getName
+                  if (!method.getReturnType.getClass.isAssignableFrom(classOf[ParameterizedTypeImpl])){
+                    methodReturnClass = method.getReturnType.asInstanceOf[Class[_]].getComponentType.getName
+                  }
                 }
                 case _ =>
               }
