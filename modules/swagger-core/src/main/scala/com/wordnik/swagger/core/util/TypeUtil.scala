@@ -72,6 +72,16 @@ object TypeUtil {
     return isArray
   }
 
+  def isParameterizedScalaOption(genericType: Type): Boolean = {
+    var isOption = false
+    val isTypeParameterized: Boolean = classOf[ParameterizedType].isAssignableFrom(genericType.getClass)
+    if (isTypeParameterized) {
+      val parameterizedType: ParameterizedType = genericType.asInstanceOf[ParameterizedType]
+      isOption = (parameterizedType.getRawType == classOf[Option[_]])
+    }
+    return isOption
+  }
+
   /**
    * Gets a parameterized lists types if they are in com.wordnik.* packages
    */
@@ -80,10 +90,7 @@ object TypeUtil {
     if (isParameterizedList(genericType) || isParameterizedSet(genericType)) {
       val parameterizedType: ParameterizedType = genericType.asInstanceOf[ParameterizedType]
       for (_listType <- parameterizedType.getActualTypeArguments) {
-        if (!_listType.getClass.isAssignableFrom(classOf[ParameterizedTypeImpl])){
-          val listType: Class[_] = _listType.asInstanceOf[Class[_]]
-          if (listType.getName.startsWith(WORDNIK_PACKAGES)) list.add(listType.getName)
-        }
+        checkAndAddConcreteObjectType(_listType, list)
       }
     } else if (isParameterizedMap(genericType)) {
       val parameterizedType: ParameterizedType = genericType.asInstanceOf[ParameterizedType]
@@ -91,21 +98,27 @@ object TypeUtil {
       val keyType = typeArgs(0)
       val valueType = typeArgs(1)
       if (keyType.isInstanceOf[Class[_]]) {
-        if (!keyType.getClass.isAssignableFrom(classOf[ParameterizedTypeImpl])){
-          val keyTypeClass: Class[_] = keyType.asInstanceOf[Class[_]]
-          if (keyTypeClass.getName.startsWith(WORDNIK_PACKAGES)) list.add(keyTypeClass.getName)
-        }
+        checkAndAddConcreteObjectType(keyType, list)
       }
       if (valueType.isInstanceOf[Class[_]]) {
-        if (!valueType.getClass.isAssignableFrom(classOf[ParameterizedTypeImpl])){
-          val valueTypeClass: Class[_] = valueType.asInstanceOf[Class[_]]
-          if (valueTypeClass.getName.startsWith(WORDNIK_PACKAGES)) list.add(valueTypeClass.getName)
-        }
+        checkAndAddConcreteObjectType(valueType, list)
       }
       list.addAll(getWordnikParameterTypes(keyType))
       list.addAll(getWordnikParameterTypes(valueType))
+    } else if (isParameterizedScalaOption(genericType)){
+      val parameterizedType: ParameterizedType = genericType.asInstanceOf[ParameterizedType]
+      for (optionType <- parameterizedType.getActualTypeArguments) {
+        checkAndAddConcreteObjectType(optionType, list)
+      }
     }
     return list
+  }
+  
+  private def checkAndAddConcreteObjectType(classType:Type, list: java.util.List[String]) {
+    if (!classType.getClass.isAssignableFrom(classOf[ParameterizedTypeImpl])){
+      val listType: Class[_] = classType.asInstanceOf[Class[_]]
+      if (listType.getName.startsWith(WORDNIK_PACKAGES)) list.add(listType.getName)
+    }
   }
 
   /**
@@ -139,7 +152,7 @@ object TypeUtil {
           }
         }
         if (clazz != null) {
-          for (field <- clazz.getDeclaredFields) {
+          for (field <- clazz.getFields) {
             if (Modifier.isPublic(field.getModifiers)) {
               var fieldClass: String = field.getType.getName
               var fieldGenericType = field.getGenericType
@@ -159,7 +172,7 @@ object TypeUtil {
               }
             }
           }
-          for (method <- clazz.getDeclaredMethods) {
+          for (method <- clazz.getMethods) {
             if (Modifier.isPublic(method.getModifiers)) {
               var methodReturnClass: String = method.getReturnType.getName
               var methodGenericType = method.getGenericReturnType

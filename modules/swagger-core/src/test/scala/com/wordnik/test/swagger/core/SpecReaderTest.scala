@@ -148,7 +148,6 @@ class SpecReaderTest extends FlatSpec with ShouldMatchers {
     var classes:java.util.List[String] = new java.util.ArrayList[String]()
     classes.add(classOf[ObjectWithDifferentElementAndPropertyName].getName);
     val types = TypeUtil.getReferencedClasses(classes)
-    println(types)
     assert(types.size() === 2)
   }
 
@@ -165,6 +164,21 @@ class SpecReaderTest extends FlatSpec with ShouldMatchers {
     expect(11) {
       docObj.getFields.size()
     }
+  }
+
+  it should "read objects with objects form scala option properties" in {
+    var classes:java.util.List[String] = new java.util.ArrayList[String]()
+    classes.add(classOf[ScalaCaseClassWithScalaSupportedType].getName);
+    val types = TypeUtil.getReferencedClasses(classes)
+    assert(types.size() === 3)
+  }
+
+  it should "read objects from base class for identifying model classes " in {
+    var classes:java.util.List[String] = new java.util.ArrayList[String]()
+    classes.add(classOf[ClassToTestModelClassesFromBaseClass].getName);
+    val types = TypeUtil.getReferencedClasses(classes)
+    println("types are ::::::::::::::::" + types)
+    assert(types.size() === 2)
   }
 
 }
@@ -439,7 +453,7 @@ case class ScalaCaseClassWithScalaSupportedType(
                                                  stringType: String, 
                                                  dateType: java.util.Date, 
                                                  mapType: Map[String,  String],
-                                                 @(ApiProperty @field)(dataType="Long")optionType: Option[Long],
+                                                 optionType: Option[TestClassWithConstructorProperties],
                                                  seqType: Seq[String],
                                                  setType: Set[String],
                                                  seqOfTuples: Seq[(String,  Double)],
@@ -447,3 +461,5 @@ case class ScalaCaseClassWithScalaSupportedType(
                                                  collectionOfCollections:Map[String,  Seq[ObjectWithRootElementName]]){
 }
 
+class ClassToTestModelClassesFromBaseClass extends ObjectWithChildObjectsInMap {
+}
