@@ -20,7 +20,6 @@ import com.wordnik.swagger.core.SwaggerContext
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.lang.reflect._
-import java.util._
 
 object TypeUtil {
   /**
@@ -31,7 +30,8 @@ object TypeUtil {
     val isTypeParameterized: Boolean = classOf[ParameterizedType].isAssignableFrom(genericType.getClass)
     if (isTypeParameterized) {
       val parameterizedType: ParameterizedType = genericType.asInstanceOf[ParameterizedType]
-      isList = (parameterizedType.getRawType == classOf[List[_]])
+      isList = (parameterizedType.getRawType == classOf[java.util.List[_]]) || (parameterizedType.getRawType == classOf[scala.List[_]]) ||
+               (parameterizedType.getRawType == classOf[Seq[_]])
     }
     return isList && isTypeParameterized
   }
@@ -44,7 +44,7 @@ object TypeUtil {
     val isTypeParameterized: Boolean = classOf[ParameterizedType].isAssignableFrom(genericType.getClass)
     if (isTypeParameterized) {
       val parameterizedType: ParameterizedType = genericType.asInstanceOf[ParameterizedType]
-      isSet = (parameterizedType.getRawType == classOf[Set[_]])
+      isSet = (parameterizedType.getRawType == classOf[java.util.Set[_]]) || (parameterizedType.getRawType == classOf[Set[_]])
     }
     return isSet && isTypeParameterized
   }
@@ -57,8 +57,8 @@ object TypeUtil {
     val isTypeParameterized: Boolean = classOf[ParameterizedType].isAssignableFrom(genericType.getClass)
     if (isTypeParameterized) {
       val parameterizedType: ParameterizedType = genericType.asInstanceOf[ParameterizedType]
-      isMap = (parameterizedType.getRawType == classOf[Map[_, _]])
-      if(!isMap)isMap = (parameterizedType.getRawType == classOf[HashMap[_,_]]);
+      isMap = (parameterizedType.getRawType == classOf[java.util.Map[_, _]]) || (parameterizedType.getRawType == classOf[Map[_, _]])
+      if(!isMap)isMap = (parameterizedType.getRawType == classOf[java.util.HashMap[_,_]]);
     }
     return isMap && isTypeParameterized
   }
@@ -74,8 +74,8 @@ object TypeUtil {
   /**
    * Gets a parameterized lists types if they are in com.wordnik.* packages
    */
-  private def getWordnikParameterTypes(genericType: Type): List[String] = {
-    var list: List[String] = new ArrayList[String]
+  private def getWordnikParameterTypes(genericType: Type): java.util.List[String] = {
+    var list: java.util.List[String] = new java.util.ArrayList[String]
     if (isParameterizedList(genericType) || isParameterizedSet(genericType)) {
       val parameterizedType: ParameterizedType = genericType.asInstanceOf[ParameterizedType]
       for (_listType <- parameterizedType.getActualTypeArguments) {
@@ -104,8 +104,8 @@ object TypeUtil {
   /**
    * Get all classes references by a given list of classes. This includes types of method params and fields
    */
-  def getReferencedClasses(classNameList: List[String]): Collection[String] = {
-    val referencedClasses: Set[String] = new HashSet[String]
+  def getReferencedClasses(classNameList: java.util.List[String]): java.util.Collection[String] = {
+    val referencedClasses: java.util.Set[String] = new java.util.HashSet[String]
     import scala.collection.JavaConversions._
     for (className <- classNameList) {
       referencedClasses.addAll(getReferencedClasses(className))
@@ -116,10 +116,10 @@ object TypeUtil {
   /**
    * Get all classes references by a given class. This includes types of method params and fields
    */
-  def getReferencedClasses(className: String): Collection[String] = {
+  def getReferencedClasses(className: String): java.util.Collection[String] = {
     if (REFERENCED_CLASSES_CACHE.containsKey(className)) return REFERENCED_CLASSES_CACHE.get(className)
     else {
-      val referencedClasses: Set[String] = new HashSet[String]
+      val referencedClasses: java.util.Set[String] = new java.util.HashSet[String]
       if (className.indexOf(".") > 0) {
         referencedClasses.add(className)
         var clazz: Class[_] = null
@@ -172,7 +172,7 @@ object TypeUtil {
         }
       }
       REFERENCED_CLASSES_CACHE.put(className, referencedClasses)
-      val additionalClasses: Set[String] = new HashSet[String]
+      val additionalClasses: java.util.Set[String] = new java.util.HashSet[String]
       import scala.collection.JavaConversions._
       for (referencedClass <- referencedClasses) {
         if (!REFERENCED_CLASSES_CACHE.containsKey(referencedClass)) {
@@ -186,7 +186,7 @@ object TypeUtil {
 
   private final val LOGGER: Logger = LoggerFactory.getLogger(TypeUtil.getClass().getName())
   private final val WORDNIK_PACKAGES: String = "com.wordnik."
-  private final val REFERENCED_CLASSES_CACHE: Map[String, Set[String]] = new HashMap[String, Set[String]]
+  private final val REFERENCED_CLASSES_CACHE: java.util.Map[String, java.util.Set[String]] = new java.util.HashMap[String, java.util.Set[String]]
 }
 
 

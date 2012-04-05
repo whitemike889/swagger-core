@@ -29,6 +29,7 @@ import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
 
 import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 import scala.reflect.BeanProperty
 import scala.annotation.target.field
 
@@ -154,6 +155,14 @@ class SpecReaderTest extends FlatSpec with ShouldMatchers {
   it should "read properties with XML attribute annotations" in {
     var docObj = ApiPropertiesReader.read(classOf[ObjectWithRootElementName])
     expect(3) {
+      docObj.getFields.size()
+    }
+  }
+
+  it should "read properties for scala case classes " in {
+    var docObj = ApiPropertiesReader.read(classOf[ScalaCaseClassWithScalaSupportedType])
+    docObj.getFields.asScala.foreach(field => println("Field Name is " + field.getName() + " with type " + field.getParamType()))
+    expect(11) {
       docObj.getFields.size()
     }
   }
@@ -422,5 +431,19 @@ object ScalaEnums extends Enumeration {
     val Abbreviation                  = Value("abbrev")
     val AdjectivalComplement          = Value("acomp")
     val AdverbialClauseModifier       = Value("advcl")
+}
+
+case class ScalaCaseClassWithScalaSupportedType(
+                                                 intType: Int,
+                                                 longType: Long,
+                                                 stringType: String, 
+                                                 dateType: java.util.Date, 
+                                                 mapType: Map[String,  String],
+                                                 @(ApiProperty @field)(dataType="Long")optionType: Option[Long],
+                                                 seqType: Seq[String],
+                                                 setType: Set[String],
+                                                 seqOfTuples: Seq[(String,  Double)],
+                                                 @(ApiProperty @field)(dataType="String")enumType:ScalaEnums.Value,
+                                                 collectionOfCollections:Map[String,  Seq[ObjectWithRootElementName]]){
 }
 

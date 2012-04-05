@@ -78,6 +78,13 @@ object ApiPropertiesReader {
       ///This step will ignore all those fields.
       if (!genericReturnType.getClass.isAssignableFrom(classOf[ParameterizedTypeImpl])){
         paramType = readName(genericReturnType.asInstanceOf[Class[_]])
+      }else{
+        //handle scala options
+        val parameterizedType: java.lang.reflect.ParameterizedType = genericReturnType.asInstanceOf[java.lang.reflect.ParameterizedType]
+        if (parameterizedType.getRawType == classOf[Option[_]]) {
+          val valueType = parameterizedType.getActualTypeArguments.head
+          paramType = getDataType(valueType, valueType)
+        }
       }
     }
     paramType
