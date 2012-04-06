@@ -452,7 +452,7 @@ case class ScalaCaseClassWithScalaSupportedType(
                                                  longType: Long,
                                                  stringType: String, 
                                                  dateType: java.util.Date, 
-                                                 mapType: Map[String,  String],
+                                                 mapType: Map[String,  Seq[ObjectWithRootElementName]],
                                                  optionType: Option[TestClassWithConstructorProperties],
                                                  seqType: Seq[String],
                                                  setType: Set[String],
