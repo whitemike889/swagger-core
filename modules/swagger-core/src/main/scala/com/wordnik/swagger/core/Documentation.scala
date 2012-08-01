@@ -16,18 +16,16 @@
 
 package com.wordnik.swagger.core
 
-import org.codehaus.jackson._
-import org.codehaus.jackson.annotate._
-import org.codehaus.jackson.map._
-import org.codehaus.jackson.map.annotate._
+import com.fasterxml.jackson.annotation.{JsonProperty, JsonIgnore}
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
 
 import java.util.HashMap
+import javax.xml.bind.annotation._
 
 import scala.reflect.BeanProperty
 import scala.collection._
-import mutable.{ ListBuffer }
+import scala.collection.mutable.ListBuffer
 import scala.collection.JavaConversions._
-import javax.xml.bind.annotation._
 
 trait Name {
   private var name: String = _
@@ -452,7 +450,7 @@ class DocumentationSchema {
   var ref: String = null
 
   @XmlTransient
-  val simpleTypeList: List[String] = List("string", "number", "integer", "boolean", "object", "array", "null", "any")
+  val simpleTypeList: List[String] = List("string", "number", "int", "boolean", "object", "array", "null", "any")
 
   override def clone: Object = {
     val schema = new DocumentationSchema
