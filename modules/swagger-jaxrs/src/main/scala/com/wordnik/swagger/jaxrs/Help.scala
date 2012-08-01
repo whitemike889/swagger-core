@@ -17,6 +17,7 @@
 package com.wordnik.swagger.jaxrs
 
 import com.wordnik.swagger.core._
+import com.wordnik.swagger.core.util.TypeUtil
 import com.wordnik.swagger.annotations._
 
 import org.slf4j.LoggerFactory
@@ -45,6 +46,7 @@ trait Help {
     val swaggerVersion = reader.getSwaggerVersion()
     val basePath = reader.getBasePath()
     val apiFilterClassName = reader.getApiFilterClassName()
+    reader.getModelPackages.split(",").foreach(p => TypeUtil.addAllowablePackage(p))
 
     val filterOutTopLevelApi = true
     val currentApiEndPoint = this.getClass.getAnnotation(classOf[Api])
@@ -73,7 +75,7 @@ trait Help {
         uriInfo,
         apiListingPath,
         apiPath)
-        
+
       docs.basePath = basePath
       docs.apiVersion = apiVersion
       docs.swaggerVersion = swaggerVersion

@@ -33,6 +33,10 @@ class ConfigReader(val sc: ServletConfig) {
     if (sc != null) sc.getInitParameter("api.version") else null
   }
 
+  def getModelPackages(): String = {
+    if (sc != null) sc.getInitParameter("api.model.packages") else ""
+  }
+
   def getApiFilterClassName(): String = {
     if (sc != null) sc.getInitParameter("swagger.security.filter") else null
   }
