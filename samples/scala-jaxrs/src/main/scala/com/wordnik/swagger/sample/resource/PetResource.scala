@@ -42,12 +42,10 @@ trait PetResource extends RestResourceUtil {
     new ApiError(code = 400, reason = "Invalid ID supplied"),
     new ApiError(code = 404, reason = "Pet not found")))
   def getPetById(
-    @ApiParam(value = "ID of pet that needs to be fetched", required = true, allowableValues="range[0,10]")@PathParam("petId") petId: String) = {
-    var pet = petData.getPetbyId(getLong(0, 100000, 0, petId))
-    if (null != pet) {
-      Response.ok.entity(pet).build
-    } else {
-      throw new NotFoundException(404, "Pet not found")
+    @ApiParam(value = "ID of pet that needs to be fetched", required = true, allowableValues = "range[0,10]")@PathParam("petId") petId: String) = {
+    petData.getPetbyId(getLong(0, 100000, 0, petId)) match {
+      case pet: Pet => Response.ok.entity(pet).build
+      case _ => throw new NotFoundException(404, "Pet not found")
     }
   }
 
