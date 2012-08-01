@@ -40,6 +40,15 @@ public class PetResource extends JavaHelp {
 			@ApiParam(value = "ID of pet that needs to be fetched", allowableValues = "range[1,5]", required = true) @PathParam("petId") String petId)
 	throws NotFoundException {
 		Pet pet = petData.getPetbyId(ru.getLong(0, 100000, 0, petId));
+
+		try{
+			pet.setStatus(null);
+			System.out.println(com.wordnik.swagger.core.util.JsonUtil.getJsonMapper().writeValueAsString(pet));
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		if (null != pet) {
 			return Response.ok().entity(pet).build();
 		} else {
