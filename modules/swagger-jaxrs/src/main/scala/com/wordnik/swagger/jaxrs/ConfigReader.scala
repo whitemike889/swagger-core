@@ -34,7 +34,13 @@ class ConfigReader(val sc: ServletConfig) {
   }
 
   def getModelPackages(): String = {
-    if (sc != null) sc.getInitParameter("api.model.packages") else ""
+    sc match {
+      case s: ServletConfig => sc.getInitParameter("api.model.packages") match {
+        case str: String => str
+        case _ => ""
+      }
+      case _ => ""
+    }
   }
 
   def getApiFilterClassName(): String = {
