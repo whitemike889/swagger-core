@@ -176,6 +176,7 @@ class DocumentationOperation(
   def setResponseTypeInternal(s: String) = this.responseTypeInternal = s
 
   @XmlTransient
+  @JsonIgnore
   def getResponseTypeInternal() = this.responseTypeInternal
 
   private var errorResponses = new ListBuffer[DocumentationError]
@@ -245,6 +246,7 @@ class DocumentationParameter(
   def setValueTypeInternal(s: String) = this.valueTypeInternal = s
 
   @XmlTransient
+  @JsonIgnore
   def getValueTypeInternal() = this.valueTypeInternal
 
   override def clone(): Object = {
