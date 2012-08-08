@@ -372,7 +372,7 @@ class DocumentationObject extends Name {
     val isSet = currentField.paramType.startsWith("Set[");
 
     if (isList || isSet) {
-      currentSchema.setType("array")
+      currentSchema.setType("Array")
       currentSchema.uniqueItems = isSet;
       val arrayElementType = currentField.paramType.substring(currentField.paramType.indexOf("[") + 1, currentField.paramType.indexOf("]"))
       val arrayItem = new DocumentationSchema
@@ -452,7 +452,7 @@ class DocumentationSchema {
   var ref: String = null
 
   @XmlTransient
-  val simpleTypeList: List[String] = List("string", "number", "int", "boolean", "object", "array", "null", "any")
+  val simpleTypeList: List[String] = List("string", "number", "int", "boolean", "object", "Array", "null", "any")
 
   override def clone: Object = {
     val schema = new DocumentationSchema
