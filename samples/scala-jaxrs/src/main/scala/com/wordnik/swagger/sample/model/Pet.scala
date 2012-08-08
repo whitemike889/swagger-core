@@ -24,7 +24,7 @@ import java.util.ArrayList
 import javax.xml.bind.annotation._
 import scala.reflect.BeanProperty
 
-@XmlRootElement(name = "pet")
+@XmlRootElement(name = "Pet")
 @XmlAccessorType(XmlAccessType.NONE)
 class Pet() {
   @XmlElement(name = "id") @BeanProperty var id: Long = 0
