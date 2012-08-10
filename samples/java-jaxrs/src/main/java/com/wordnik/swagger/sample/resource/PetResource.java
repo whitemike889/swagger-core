@@ -41,14 +41,6 @@ public class PetResource extends JavaHelp {
 	throws NotFoundException {
 		Pet pet = petData.getPetbyId(ru.getLong(0, 100000, 0, petId));
 
-		try{
-			pet.setStatus(null);
-			System.out.println(com.wordnik.swagger.core.util.JsonUtil.getJsonMapper().writeValueAsString(pet));
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		
 		if (null != pet) {
 			return Response.ok().entity(pet).build();
 		} else {
