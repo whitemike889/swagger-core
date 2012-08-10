@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package com.wordnik.swagger.sample.resource;
+package com.wordnik.swagger.sample.util;
 
 import javax.ws.rs.Produces;
 
@@ -42,13 +42,13 @@ public class JacksonJsonProvider extends JacksonJaxbJsonProvider {
 
 	public JacksonJsonProvider() {
 		if(commonMapper == null){
-			System.out.println("coming thorugh app");
 		    ObjectMapper mapper = new ObjectMapper();
-		    mapper.registerModule(new DefaultScalaModule());
 
 		    mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 		    mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
+		    mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 		    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		    
 		    commonMapper = mapper;
 		}
 		super.setMapper(commonMapper);
