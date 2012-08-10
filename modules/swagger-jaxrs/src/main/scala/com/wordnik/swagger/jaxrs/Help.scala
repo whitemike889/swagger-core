@@ -36,10 +36,7 @@ trait Help {
   @GET
   @ApiOperation(value = "Returns information about API parameters",
     responseClass = "com.wordnik.swagger.core.Documentation")
-  def getHelp(@Context sc: ServletConfig,
-    @Context rc: ResourceConfig,
-    @Context headers: HttpHeaders,
-    @Context uriInfo: UriInfo): Response = {
+  def getHelp(@Context sc: ServletConfig, @Context rc: ResourceConfig, @Context headers: HttpHeaders, @Context uriInfo: UriInfo): Response = {
     val reader = ConfigReaderFactory.getConfigReader(sc)
 
     val apiVersion = reader.getApiVersion()
