@@ -43,22 +43,25 @@ class ApiModelParser(val hostClass: Class[_]) extends BaseApiParser {
     val accessorNone = hostClass.getAnnotation(classOf[XmlAccessorType]).asInstanceOf[XmlAccessorType]
     if (null != accessorNone && (accessorNone.value() == XmlAccessType.NONE)) hasAccessorNoneAnnotation = true;
 
-    if (xmlEnum != null && xmlEnum.value() != null) {
-      readName(xmlEnum.value())
-    } else if (xmlRootElement != null) {
-      if ("##default".equals(xmlRootElement.name())) {
-        if (isSimple) hostClass.getSimpleName else hostClass.getName
+    val name = {
+      if (xmlEnum != null && xmlEnum.value() != null) {
+        readName(xmlEnum.value())
+      } else if (xmlRootElement != null) {
+        if ("##default".equals(xmlRootElement.name())) {
+          if (isSimple) hostClass.getSimpleName else hostClass.getName
+        } else {
+          if (isSimple) readString(xmlRootElement.name()) else hostClass.getName
+        }
+      } else if (hostClass.getName.startsWith("java.lang.")) {
+        hostClass.getName.substring("java.lang.".length)
+      } else if (hostClass.getName.indexOf(".") < 0) {
+        hostClass.getName
       } else {
-        if (isSimple) readString(xmlRootElement.name()) else hostClass.getName
+        LOGGER.error("Class " + hostClass.getName + " is not annotated with a @XmlRootElement annotation, using " + hostClass.getSimpleName)
+        if (isSimple) hostClass.getSimpleName else hostClass.getName
       }
-    } else if (hostClass.getName.startsWith("java.lang.")) {
-      hostClass.getName.substring("java.lang.".length).toLowerCase
-    } else if (hostClass.getName.indexOf(".") < 0) {
-      hostClass.getName
-    } else {
-      LOGGER.error("Class " + hostClass.getName + " is not annotated with a @XmlRootElement annotation, using " + hostClass.getSimpleName)
-      if (isSimple) hostClass.getSimpleName else hostClass.getName
     }
+    validateDatatype(name)
   }
 
   def parse(): DocumentationObject = {
@@ -153,10 +156,14 @@ class ApiModelParser(val hostClass: Class[_]) extends BaseApiParser {
     }
   }
 
-  def validateParam(param: DocumentationParameter) = {
-    param.dataType match {
-      case "int" => param.dataType = "integer"
-      case _ =>
+  def validateParam(param: DocumentationParameter) =
+    param.dataType = validateDatatype(param.dataType)
+
+  def validateDatatype(datatype: String): String = {
+    datatype match {
+      case "integer" => "int"
+      case "String" => "string"
+      case _ => datatype
     }
   }
 
