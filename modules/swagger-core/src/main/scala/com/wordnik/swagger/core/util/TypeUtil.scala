@@ -204,7 +204,7 @@ object TypeUtil {
     }
   }
 
-  val packagesToSkip = Set("scala", "java", "int", "long", "String", "boolean", "void")
+  val packagesToSkip = Set("scala", "java", "int", "long", "String", "boolean", "void", "[Ljava")
 
   def isPackageAllowed(str: String): Boolean = {
     var isOk = false
@@ -221,7 +221,12 @@ object TypeUtil {
     isOk
   }
 
-  def addAllowablePackage(p: String) = allowablePackages += p
+  def addAllowablePackage(p: String) = {
+    p match {
+      case s: String if (s.length() > 0) => allowablePackages += p
+      case _ =>
+    }
+  }
 
   val allowablePackages = new HashSet[String]
 
