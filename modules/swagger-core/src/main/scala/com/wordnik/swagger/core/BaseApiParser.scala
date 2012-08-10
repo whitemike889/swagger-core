@@ -23,7 +23,6 @@ trait BaseApiParser {
     if (csvString == null || csvString.length == 0) new ListBuffer[String].toList
     else {
       val params = csvString.split(",").toList
-      println("got paramType " + paramType)
       paramType match {
         case null => params
         case "string" => params
