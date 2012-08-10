@@ -37,7 +37,7 @@ import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl
 import scala.collection.JavaConverters._
 
 object ApiPropertiesReader {
-  var schemaProvider:JsonSchemaProvider = new SwaggerJsonSchemaProvider
+  var schemaProvider: JsonSchemaProvider = new SwaggerJsonSchemaProvider
 
   private val modelsCache = scala.collection.mutable.Map.empty[Class[_], DocumentationObject]
 
@@ -45,7 +45,11 @@ object ApiPropertiesReader {
     modelsCache.get(hostClass) match {
       case None => {
         !hostClass.isEnum && !hostClass.getName.startsWith("java.lang.") match {
-          case true => val docObj = schemaProvider.read(hostClass); modelsCache += hostClass -> docObj; docObj
+          case true => {
+            val docObj = schemaProvider.read(hostClass)
+            modelsCache += hostClass -> docObj
+            docObj
+          }
           case _ => null
         }
       }
