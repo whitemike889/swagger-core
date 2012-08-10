@@ -16,7 +16,7 @@
 
 package com.wordnik.swagger.sample.data
 
-import com.wordnik.swagger.sample.model._
+import com.wordnik.swagger.sample.model.{Tag, Category, Pet}
 
 import java.util.ArrayList
 
@@ -86,6 +86,8 @@ class PetData {
   }
 
   def addPet(pet:Pet):Unit = {
+    // remove any pets with same id
+    pets --= pets.filter(p => p.getId == pet.getId)
     pets += pet
   }
 
