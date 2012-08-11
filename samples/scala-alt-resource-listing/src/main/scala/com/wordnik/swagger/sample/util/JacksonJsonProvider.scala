@@ -36,10 +36,11 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize
 @Provider
 @Produces(Array(MediaType.APPLICATION_JSON))
 class JacksonJsonProvider extends JacksonJaxbJsonProvider {
-  val commonMapper = new ObjectMapper()
-  commonMapper.registerModule(new DefaultScalaModule())
-  commonMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
-  commonMapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT)
-  commonMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-  super.setMapper(commonMapper)
+  val mapper = new ObjectMapper()
+  mapper.registerModule(new DefaultScalaModule())
+  mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
+  mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT)
+  mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+  mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+  super.setMapper(mapper)
 }

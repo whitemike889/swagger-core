@@ -24,12 +24,9 @@ import com.wordnik.swagger.sample.data.{ PetData }
 import com.wordnik.swagger.sample.model.{ Pet }
 import com.wordnik.swagger.sample.exception.NotFoundException
 
-import com.sun.jersey.spi.resource.Singleton
-
 import javax.ws.rs.core.Response
 import javax.ws.rs._
 import java.lang.Exception
-import com.sun.jersey.api.JResponse
 
 trait PetResource extends RestResourceUtil {
   var petData = new PetData
@@ -82,7 +79,7 @@ trait PetResource extends RestResourceUtil {
     @ApiParam(value = "Status values that need to be considered for filter", required = true, defaultValue = "available",
       allowableValues = "available,pending,sold", allowMultiple = true)@QueryParam("status") status: String) = {
     var results = petData.findPetByStatus(status)
-    JResponse.ok(results).build
+    Response.ok(results).build
   }
 
   @GET
@@ -97,20 +94,18 @@ trait PetResource extends RestResourceUtil {
     @ApiParam(value = "Tags to filter by", required = true,
       allowMultiple = true)@QueryParam("tags") tags: String) = {
     var results = petData.findPetByTags(tags)
-    JResponse.ok(results).build
+    Response.ok(results).build
   }
 }
 
 @Path("/pet.json")
 @Api(value = "/pet", description = "Operations about pets")
-@Singleton
 @Produces(Array("application/json"))
 class PetResourceJSON extends Help
   with PetResource
 
 @Path("/pet.xml")
 @Api(value = "/pet", description = "Operations about pets")
-@Singleton
 @Produces(Array("application/xml"))
 class PetResourceXML extends Help
   with PetResource
