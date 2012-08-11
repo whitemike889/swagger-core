@@ -161,8 +161,9 @@ class ApiModelParser(val hostClass: Class[_]) extends BaseApiParser {
 
   def validateDatatype(datatype: String): String = {
     datatype match {
-      case "integer" => "int"
+      case "Integer" => "int"
       case "String" => "string"
+      case "Double" => "double"
       case _ => datatype
     }
   }
