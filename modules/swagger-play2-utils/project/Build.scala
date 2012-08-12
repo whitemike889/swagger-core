@@ -7,10 +7,6 @@ object ApplicationBuild extends Build {
   val appVersion = "1.1.0-SNAPSHOT"
 
   val appDependencies: Seq[sbt.ModuleID] = Seq(
-    "org.codehaus.jackson" % "jackson-jaxrs" % "1.8.5",
-    "org.codehaus.jackson" % "jackson-xc" % "1.8.5",
-    "org.codehaus.jackson" % "jackson-mapper-asl" % "1.8.5",
-    "org.codehaus.jackson" % "jackson-core-asl" % "1.8.5",
     "org.slf4j" % "slf4j-api" % "1.6.4",
     "com.wordnik" %% "swagger-play2" % "1.1.0-SNAPSHOT",
     "com.wordnik" % "common-utils_2.9.1" % "1.1.1",
