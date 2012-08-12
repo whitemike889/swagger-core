@@ -114,9 +114,8 @@ private class PlayApiSpecParser(_hostClass: Class[_], _apiVersion: String, _swag
   }
 
   override def getPath(method: Method) = {
-    val fullMethodName = hostClass.getCanonicalName + "." + method.getName
+    val fullMethodName = getFullMethodName(method)
     val lookup = PlayApiReader.routesCache.get(fullMethodName)
-
     val str = lookup match {
       case Some(route) => route.path.parts map {
         part =>
@@ -135,8 +134,15 @@ private class PlayApiSpecParser(_hostClass: Class[_], _apiVersion: String, _swag
     s
   }
 
+  def getFullMethodName(method: Method): String = {
+    hostClass.getCanonicalName.indexOf("$") match {
+      case -1 => hostClass.getCanonicalName + "$." + method.getName
+      case _ => hostClass.getCanonicalName + "." + method.getName
+    }
+  }
+
   override protected def processOperation(method: Method, o: DocumentationOperation) = {
-    val fullMethodName = hostClass.getCanonicalName + "." + method.getName
+    val fullMethodName = getFullMethodName(method)
     val lookup = PlayApiReader.routesCache.get(fullMethodName)
     lookup match {
       case Some(route) => o.httpMethod = route.verb.value
