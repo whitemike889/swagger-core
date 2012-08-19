@@ -102,7 +102,7 @@ public class UserResource extends JavaHelp {
 
 	@GET
 	@Path("/login")
-	@ApiOperation(value = "Logs user into the system", responseClass = "String")
+	@ApiOperation(value = "Logs user into the system", responseClass = "string")
 	@ApiErrors(value = { @ApiError(code = 400, reason = "Invalid username/password supplied") })
 	public Response loginUser(
 			@ApiParam(value = "The user name for login", required = true) @QueryParam("username") String username,
