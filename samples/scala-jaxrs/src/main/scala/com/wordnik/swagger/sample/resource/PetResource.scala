@@ -29,18 +29,16 @@ import javax.ws.rs._
 import java.lang.Exception
 
 trait PetResource extends RestResourceUtil {
-  var petData = new PetData
-
   @GET
   @Path("/{petId}")
-  @ApiOperation(value = "Find pet by ID", notes = "Returns a pet when ID < 10. " +
-    "ID > 10 or nonintegers will simulate API error conditions", responseClass = "com.wordnik.swagger.sample.model.Pet")
+  @ApiOperation(value = "Find pet by ID", notes = "Returns a pet based on ID", responseClass = "com.wordnik.swagger.sample.model.Pet")
   @ApiErrors(Array(
     new ApiError(code = 400, reason = "Invalid ID supplied"),
     new ApiError(code = 404, reason = "Pet not found")))
   def getPetById(
-    @ApiParam(value = "ID of pet that needs to be fetched", required = true, allowableValues = "range[0,10]")@PathParam("petId") petId: String) = {
-    petData.getPetbyId(getLong(0, 100000, 0, petId)) match {
+    @ApiParam(value = "ID of pet that needs to be fetched", required = true)@PathParam("petId") petId: String) = {
+    println("getting pet by id " + petId)
+    PetData.getPetbyId(getLong(0, 100000, 0, petId)) match {
       case pet: Pet => Response.ok.entity(pet).build
       case _ => throw new NotFoundException(404, "Pet not found")
     }
@@ -52,7 +50,7 @@ trait PetResource extends RestResourceUtil {
     new ApiError(code = 405, reason = "Invalid input")))
   def addPet(
     @ApiParam(value = "Pet object that needs to be added to the store", required = true) pet: Pet) = {
-    petData.addPet(pet)
+    PetData.addPet(pet)
     Response.ok.entity("SUCCESS").build
   }
 
@@ -64,7 +62,7 @@ trait PetResource extends RestResourceUtil {
     new ApiError(code = 405, reason = "Validation exception")))
   def updatePet(
     @ApiParam(value = "Pet object that needs to be updated in the store", required = true) pet: Pet) = {
-    petData.addPet(pet)
+    PetData.addPet(pet)
     Response.ok.entity("SUCCESS").build
   }
 
@@ -78,7 +76,7 @@ trait PetResource extends RestResourceUtil {
   def findPetsByStatus(
     @ApiParam(value = "Status values that need to be considered for filter", required = true, defaultValue = "available",
       allowableValues = "available,pending,sold", allowMultiple = true)@QueryParam("status") status: String) = {
-    var results = petData.findPetByStatus(status)
+    var results = PetData.findPetByStatus(status)
     Response.ok(results).build
   }
 
@@ -93,7 +91,7 @@ trait PetResource extends RestResourceUtil {
   def findPetsByTags(
     @ApiParam(value = "Tags to filter by", required = true,
       allowMultiple = true)@QueryParam("tags") tags: String) = {
-    var results = petData.findPetByTags(tags)
+    var results = PetData.findPetByTags(tags)
     Response.ok(results).build
   }
 }
