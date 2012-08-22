@@ -37,7 +37,6 @@ trait PetResource extends RestResourceUtil {
     new ApiError(code = 404, reason = "Pet not found")))
   def getPetById(
     @ApiParam(value = "ID of pet that needs to be fetched", required = true)@PathParam("petId") petId: String) = {
-    println("getting pet by id " + petId)
     PetData.getPetbyId(getLong(0, 100000, 0, petId)) match {
       case pet: Pet => Response.ok.entity(pet).build
       case _ => throw new NotFoundException(404, "Pet not found")

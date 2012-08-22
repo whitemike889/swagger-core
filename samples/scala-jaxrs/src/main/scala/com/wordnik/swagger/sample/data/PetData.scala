@@ -49,7 +49,6 @@ object PetData {
 
   def getPetbyId(petId: Long): Pet = {
     for (pet <- pets) {
-      println("checking id " + pet.getId + " against " + petId)
       if (pet.getId() == petId) {
         return pet
       }
@@ -84,12 +83,9 @@ object PetData {
   }
 
   def addPet(pet: Pet): Unit = {
-    println("starting size: " + pets.size)
-    println("adding pet with id " + pet.getId)
     // remove any pets with same id
     pets --= pets.filter(p => p.getId == pet.getId)
     pets += pet
-    println("ending size: " + pets.size)
   }
 
   private def createPet(id: Long, cat: Category, name: String, urls: List[String], tags: List[String], status: String): Pet = {
