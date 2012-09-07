@@ -181,6 +181,20 @@ class SpecReaderTest extends FlatSpec with ShouldMatchers {
     assert(types.size() === 2)
   }
 
+  it should "not read methods from companion object " in {
+    var docObj = ApiPropertiesReader.read(classOf[TestCompanionObject])
+    expect(3) {
+      docObj.getFields.size()
+    }
+  }
+
+  it should "not read reference objects form companion object methods" in {
+    var classes:java.util.List[String] = new java.util.ArrayList[String]()
+    classes.add(classOf[TestCompanionObject].getName);
+    val types = TypeUtil.getReferencedClasses(classes)
+    assert(types.size() === 1)
+  }
+
 }
 
 @RunWith(classOf[JUnitRunner])
@@ -354,6 +368,8 @@ class ExtendedClass extends BaseClass{
 @XmlRootElement(name= "sampleDataTypes")
 class SampleDataTypes {
   @BeanProperty var sampleByte:Byte = _
+  @BeanProperty var sampleDouble:Set[Double] = _
+  @BeanProperty var sampleLong:Set[java.lang.Long] = _
   @BeanProperty var sampleArrayByte:Array[Byte] = _
   @BeanProperty var sampleArrayString:Array[String] = _
   @BeanProperty var sampleListString:Array[String] = _
@@ -462,4 +478,18 @@ case class ScalaCaseClassWithScalaSupportedType(
 }
 
 class ClassToTestModelClassesFromBaseClass extends ObjectWithChildObjectsInMap {
+}
+
+case class TestCompanionObject(
+  @BeanProperty var label:String,
+  @BeanProperty var width:Int,
+  @BeanProperty var height:Int) {
+}
+
+object TestCompanionObject {
+
+  def getDescription():ObjectWithRootElementName = {
+    null
+  }
+
 }

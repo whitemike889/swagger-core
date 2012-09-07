@@ -153,7 +153,7 @@ object TypeUtil {
         }
         if (clazz != null) {
           for (field <- clazz.getFields) {
-            if (Modifier.isPublic(field.getModifiers)) {
+            if (Modifier.isPublic(field.getModifiers) && !Modifier.isStatic(field.getModifiers)) {
               var fieldClass: String = field.getType.getName
               var fieldGenericType = field.getGenericType
               field.getType.isArray match {
@@ -173,7 +173,7 @@ object TypeUtil {
             }
           }
           for (method <- clazz.getMethods) {
-            if (Modifier.isPublic(method.getModifiers)) {
+            if (Modifier.isPublic(method.getModifiers) && !Modifier.isStatic(method.getModifiers)) {
               var methodReturnClass: String = method.getReturnType.getName
               var methodGenericType = method.getGenericReturnType
 
