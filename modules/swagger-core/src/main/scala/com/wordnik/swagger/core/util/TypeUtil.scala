@@ -31,8 +31,10 @@ object TypeUtil {
     val isTypeParameterized: Boolean = classOf[ParameterizedType].isAssignableFrom(genericType.getClass)
     if (isTypeParameterized) {
       val parameterizedType: ParameterizedType = genericType.asInstanceOf[ParameterizedType]
-      isList = (parameterizedType.getRawType == classOf[java.util.List[_]]) || (parameterizedType.getRawType == classOf[scala.List[_]]) ||
-               (parameterizedType.getRawType == classOf[Seq[_]])
+      isList =  (parameterizedType.getRawType == classOf[java.util.List[_]]) ||
+                (parameterizedType.getRawType == classOf[java.util.ArrayList[_]]) ||
+                (parameterizedType.getRawType == classOf[scala.List[_]]) ||
+                (parameterizedType.getRawType == classOf[Seq[_]])
     }
     return isList && isTypeParameterized
   }
@@ -45,7 +47,12 @@ object TypeUtil {
     val isTypeParameterized: Boolean = classOf[ParameterizedType].isAssignableFrom(genericType.getClass)
     if (isTypeParameterized) {
       val parameterizedType: ParameterizedType = genericType.asInstanceOf[ParameterizedType]
-      isSet = (parameterizedType.getRawType == classOf[java.util.Set[_]]) || (parameterizedType.getRawType == classOf[Set[_]])
+      isSet = (parameterizedType.getRawType == classOf[java.util.Set[_]]) ||
+              (parameterizedType.getRawType == classOf[java.util.HashSet[_]]) ||
+              (parameterizedType.getRawType == classOf[Set[_]])||
+              (parameterizedType.getRawType == classOf[scala.collection.Set[_]]) ||
+              (parameterizedType.getRawType == classOf[scala.collection.mutable.Set[_]]) ||
+              (parameterizedType.getRawType == classOf[scala.collection.immutable.Set[_]])
     }
     return isSet && isTypeParameterized
   }
@@ -58,8 +65,12 @@ object TypeUtil {
     val isTypeParameterized: Boolean = classOf[ParameterizedType].isAssignableFrom(genericType.getClass)
     if (isTypeParameterized) {
       val parameterizedType: ParameterizedType = genericType.asInstanceOf[ParameterizedType]
-      isMap = (parameterizedType.getRawType == classOf[java.util.Map[_, _]]) || (parameterizedType.getRawType == classOf[Map[_, _]])
-      if(!isMap)isMap = (parameterizedType.getRawType == classOf[java.util.HashMap[_,_]]);
+      isMap = (parameterizedType.getRawType == classOf[java.util.Map[_, _]]) ||
+              (parameterizedType.getRawType == classOf[Map[_, _]]) ||
+              (parameterizedType.getRawType == classOf[scala.collection.Map[_, _]]) ||
+              (parameterizedType.getRawType == classOf[scala.collection.mutable.Map[_, _]]) ||
+              (parameterizedType.getRawType == classOf[scala.collection.immutable.Map[_, _]]) ||
+              (parameterizedType.getRawType == classOf[java.util.HashMap[_, _]]);
     }
     return isMap && isTypeParameterized
   }

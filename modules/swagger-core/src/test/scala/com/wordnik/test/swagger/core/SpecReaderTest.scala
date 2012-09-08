@@ -464,17 +464,21 @@ object ScalaEnums extends Enumeration {
 }
 
 case class ScalaCaseClassWithScalaSupportedType(
-                                                 intType: Int,
-                                                 longType: Long,
-                                                 stringType: String, 
-                                                 dateType: java.util.Date, 
-                                                 mapType: Map[String,  Seq[ObjectWithRootElementName]],
-                                                 optionType: Option[TestClassWithConstructorProperties],
-                                                 seqType: Seq[String],
-                                                 setType: Set[String],
-                                                 seqOfTuples: Seq[(String,  Double)],
+                                                 val intType: Int,
+                                                 val longType: Long,
+                                                 val stringType: String,
+                                                 val dateType: java.util.Date,
+                                                 val mapType: scala.collection.Map[String,  Seq[ObjectWithRootElementName]],
+                                                 val optionType: Option[TestClassWithConstructorProperties],
+                                                 val seqType: Seq[String],
+                                                 val setType: Set[String],
+                                                 val seqOfTuples: Seq[(String,  Double)],
                                                  @(ApiProperty @field)(dataType="String")enumType:ScalaEnums.Value,
-                                                 collectionOfCollections:Map[String,  Seq[ObjectWithRootElementName]]){
+                                                 val collectionOfCollections:Map[String,  Seq[ObjectWithRootElementName]])
+object  ScalaCaseClassWithScalaSupportedType {
+  def featureVectors2featureVectorsDto : ScalaCaseClassWithScalaSupportedType = {
+    null
+  }
 }
 
 class ClassToTestModelClassesFromBaseClass extends ObjectWithChildObjectsInMap {
